@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 
 interface ToDo {
   text: string;
-  working: boolean;
+  isWorking: boolean;
 };
 
 interface ToDos {
@@ -35,12 +35,12 @@ export default function useToDos() {
     }
   };
 
-  const addToDo = async (text: string, working: boolean) => {
+  const addToDo = async (text: string, isWorking: boolean) => {
     if (text === '') return;
 
     const newToDos = {
       ...toDos,
-      [Date.now()]: { text, working }
+      [Date.now()]: { text, isWorking }
     };
 
     // save to do

@@ -1,9 +1,9 @@
 ---
 name: 새 기능 요청
 about: 이 프로젝트에 유용한 아이디어를 제안합니다.
-title: ""
-labels: ""
-assignees: Hira-Yuki
+title: ''
+labels: ''
+assignees: ''
 ---
 
 **요청하려는 기능이 어떤 문제와 관련 있습니까?**

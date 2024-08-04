@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 export default function useHeaderButton() {
-  const [working, setWorking] = useState(true);
-  const travel = () => setWorking(false);
-  const work = () => setWorking(true);
+  const [isWorking, setIsWorking] = useState(true);
+  const travel = () => setIsWorking(false);
+  const work = () => setIsWorking(true);
 
   return {
-    working,
+    isWorking,
     travel,
     work
   }
