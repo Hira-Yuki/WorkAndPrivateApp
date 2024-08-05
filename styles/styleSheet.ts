@@ -35,6 +35,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   toDoText: {
+    flex: 0.82,
     color: theme.white,
     fontSize: 16,
     fontWeight: '500',
@@ -42,9 +43,10 @@ export const styles = StyleSheet.create({
   toDoFunctions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 20,
   },
   completeText: {
+    flex: 0.82,
     color: theme.ashGrey,
     fontSize: 16,
     fontWeight: '700',

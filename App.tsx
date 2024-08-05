@@ -22,7 +22,7 @@ export default function App() {
         <HeaderSwitch work={work} isWorking={isWorking} travel={travel} />
       </View>
       <View>
-        <InputForm handleAddToDo={handleAddToDo} onChangeText={onChangeText} text={text} isWorking={isWorking} />
+        <InputForm onSubmit={handleAddToDo} onChangeText={onChangeText} text={text} isWorking={isWorking} />
       </View>
       <ScrollView>
         {Object.keys(toDos).map(key => (
@@ -35,13 +35,30 @@ export default function App() {
                     : <Fontisto name="checkbox-passive" size={16} color={theme.white} />}
                 </TouchableOpacity>
                 {toDos[key].isComplete
-                  ? <Text style={styles.completeText}>{toDos[key].text}</Text>
-                  : <Text style={styles.toDoText}>{toDos[key].text}</Text>
+                  ? <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={styles.completeText}
+                  >
+                    {toDos[key].text}
+                  </Text>
+                  : <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={styles.toDoText}
+                  >
+                    {toDos[key].text}
+                  </Text>
                 }
               </View>
-              <TouchableOpacity onPress={() => { deleteToDo(key) }}>
-                <Fontisto name='trash' size={16} color={theme.ashGrey} />
-              </TouchableOpacity>
+              <View style={styles.toDoFunctions}>
+                <TouchableOpacity>
+                  <Fontisto name="eraser" size={16} color={theme.ashGrey} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { deleteToDo(key) }}>
+                  <Fontisto name='trash' size={16} color={theme.ashGrey} />
+                </TouchableOpacity>
+              </View>
             </View>
           )
         ))}
