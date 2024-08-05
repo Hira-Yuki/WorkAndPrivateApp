@@ -26,6 +26,9 @@ export default function useToDos() {
     }
   };
 
+  /**
+   * @Todo 데이터가 로드 되는 동안 로딩 인디케이터 표시할것
+   */
   const loadToDos = async () => {
     try {
       const storageData = await AsyncStorage.getItem(STORAGE_KEY) as string;
