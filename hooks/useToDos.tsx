@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Alert } from 'react-native';
 
 interface ToDo {
   text: string;
   isWorking: boolean;
+  isComplete: boolean;
 };
 
 interface ToDos {
@@ -17,14 +18,15 @@ export default function useToDos() {
   const [toDos, setToDos] = useState<ToDos>({});
 
   useEffect(() => { loadToDos(); }, []);
+  useEffect(() => { saveToDos(toDos); }, [toDos]);
 
-  const saveToDos = async (toSave: ToDos) => {
+  const saveToDos = useCallback(async (toSave: ToDos) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
     } catch (error) {
       // 저장공간 접근 불가 or 저장공간 용량 부족등 이슈 있을 때 에러 처리
     }
-  };
+  }, []);
 
   /**
    * @Todo 데이터가 로드 되는 동안 로딩 인디케이터 표시할것
@@ -43,13 +45,21 @@ export default function useToDos() {
 
     const newToDos = {
       ...toDos,
-      [Date.now()]: { text, isWorking }
+      [Date.now()]: { text, isWorking, isComplete: false }
     };
 
     // save to do
-    await saveToDos(newToDos);
     setToDos(newToDos);
+  };
 
+  const toggleComplete = async (key: string) => {
+    try {
+      const newToDos = { ...toDos };
+      newToDos[key].isComplete = !newToDos[key].isComplete;
+      setToDos(newToDos);
+    } catch (error) {
+      // 저장공간 접근 불가 등 에러 처리
+    }
   };
 
   const deleteToDo = async (key: string) => {
@@ -62,7 +72,6 @@ export default function useToDos() {
           try {
             const newToDos = { ...toDos };
             delete newToDos[key];
-            await saveToDos(newToDos);
             setToDos(newToDos);
           } catch (error) {
             // 저장공간 접근 불가 등 에러 처리
@@ -76,6 +85,7 @@ export default function useToDos() {
     toDos,
     addToDo,
     deleteToDo,
+    toggleComplete
   };
 
 }

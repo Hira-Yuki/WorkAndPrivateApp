@@ -39,4 +39,16 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
+  toDoFunctions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  completeText: {
+    color: theme.ashGrey,
+    fontSize: 16,
+    fontWeight: '700',
+    textDecorationLine: 'line-through',
+    fontStyle: 'italic',
+  },
 });

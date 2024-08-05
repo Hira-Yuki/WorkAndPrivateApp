@@ -34,7 +34,7 @@ export default function HeaderSwitch({ work, travel, isWorking }: HeaderSwitchPr
               : theme.white
           }}
         >
-          Travel
+          Private
         </Text>
       </TouchableOpacity>
     </>
