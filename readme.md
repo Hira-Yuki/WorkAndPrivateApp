@@ -1,40 +1,53 @@
-## 참고할 디자인
+# Work and Private App
+
+이 앱은 매우 단순한 개인 및 업무 관련 작업을 관리할 수 있도록 돕는 작업 관리 애플리케이션입니다.
+사용자는 두개의 탭을 통해 작업을 생성, 관리할 수 있습니다.
+
+## 참고한 디자인
 
 **[Do More Task List](https://dribbble.com/shots/5985329-Do-More-Task-List/attachments/11174366?mode=media) designed by Brian Plemons**
 
-![태스크 리스트](https://cdn.dribbble.com/users/28033/screenshots/5985329/media/e6f6927e747fd47891fcbb01789a7175.png)
+![태스크 리스트 디자인 이미지](https://cdn.dribbble.com/users/28033/screenshots/5985329/media/e6f6927e747fd47891fcbb01789a7175.png)
 
-## To Do List
+## 시작하기
 
-### Most Have features...
+로컬 환경에서 프로젝트를 설정하고 실행하는 간단한 단계는 다음과 같습니다.
 
-**[Mission Critical] 반드시 있어야만 하는 중요 기능입니다.**
+### 전제 조건
 
-- [x] Tab으로 업무와 개인적인 일을 구분할 수 있게 하기
-- [x] Tab 마다 다른 Task를 저장할 수 있게 하기
-- [x] Tab에 따라 다른 Task List 보여주기
-- [x] 임의의 Task를 1개 삭제할 수 있게 하기
-- [x] Task를 완료 여부를 저장할 수 있게 하기
-- [x] Device에 데이터를 저장하기
+- Node.js가 설치되어 있어야 합니다.
 
-### Should Have features...
+### 설치 방법
 
-**[P0] 꼭 필요한 기능들이지만, Critical하진 않습니다.**
+1. 레포지토리 클론:
+   ```sh
+   git clone https://github.com/Hira-Yuki/WorkAndPrivateApp.git
+   ```
+2. 프로젝트 디렉토리로 이동:
+   ```sh
+   cd WorkAndPrivateApp
+   ```
+3. 종속성 설치:
+   ```sh
+   npm install
+   ```
+4. 애플리케이션 실행:
+   ```sh
+   npm start
+   ```
 
-- [x] 헤더에서 선택한 Tab을 기억하게 하기
-- [x] Task Text가 길면 넘치는 부분 숨김 처리
-- [ ] Task 상세 보기 components 만들기
+## 기여하기
 
-### Could Have features...
+오픈 소스 커뮤니티는 배우고, 영감을 받고, 창조하는 놀라운 장소입니다. 여러분의 기여는 **대단히 감사**합니다.
 
-**[P1] 있으면 좋겠지만, 반드시 필요한 기능은 아닙니다.**
+1. 프로젝트 포크
+2. 기능 브랜치 생성 (`git checkout -b feature/AmazingFeature`)
+3. 변경 사항 커밋 (`git commit -m 'Add some AmazingFeature'`)
+4. 브랜치 푸시 (`git push origin feature/AmazingFeature`)
+5. 풀 리퀘스트 생성
 
-- [ ] 작성한 Task를 수정할 수 있게 하기
-- [ ] 데이터를 기다리는 동안 보여줄 로딩 인디케이터 생성하기
-- [ ] 다크 모드 / 라이트 모드 스왑
+## 연락처
 
-### Won't Have...
+[email](mailto:cjsdlf44@gmail.com?subject=[Work%20and%20Private%20App%20feedback])
 
-**[P2] 효과가 미미하여 이번 버전에는 포함시키지 않을 기능입니다.**
-
-- [ ] All Task Delete 기능 만들기
+프로젝트 링크: [https://github.com/Hira-Yuki/WorkAndPrivateApp](https://github.com/Hira-Yuki/WorkAndPrivateApp)
