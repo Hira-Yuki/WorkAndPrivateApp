@@ -12,10 +12,10 @@ export default function TodoFunctions({ toggleEdit, deleteToDo }: TodoFunctionsP
 
   return (
     <View style={styles.toDoFunctions}>
-      <TouchableOpacity onPress={() => { toggleEdit() }}>
+      <TouchableOpacity onPress={toggleEdit}>
         <Fontisto name="eraser" size={16} color={theme.ashGrey} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => { deleteToDo() }}>
+      <TouchableOpacity onPress={deleteToDo}>
         <Fontisto name='trash' size={16} color={theme.ashGrey} />
       </TouchableOpacity>
     </View>
