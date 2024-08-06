@@ -53,4 +53,8 @@ export const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
     fontStyle: 'italic',
   },
+  loading: {
+    flex: 1,
+    marginVertical: 100,
+  },
 });

@@ -1,15 +1,14 @@
-import { Fontisto } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { theme } from './color';
-import { HeaderSwitch, InputForm } from './components';
+import { CompleteToggler, HeaderSwitch, InputForm, TodoFunctions, ToDoText } from './components';
 import { useHeaderButton, useInput, useToDos } from './hooks';
 import { styles } from './styles/styleSheet';
 
 export default function App() {
   const { isWorking, travel, work } = useHeaderButton();
+  const { toDos, addToDo, deleteToDo, toggleComplete, isLoading, toggleEdit, editToDo } = useToDos();
   const { value: text, onChange: onChangeText, reset: resetText } = useInput('');
-  const { toDos, addToDo, deleteToDo, toggleComplete } = useToDos();
 
   const handleAddToDo = async () => {
     await addToDo(text, isWorking);
@@ -19,46 +18,46 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <HeaderSwitch work={work} isWorking={isWorking} travel={travel} />
+        <HeaderSwitch
+          work={work}
+          isWorking={isWorking}
+          travel={travel}
+        />
       </View>
       <View>
-        <InputForm onSubmit={handleAddToDo} onChangeText={onChangeText} text={text} isWorking={isWorking} />
+        {/* 입력 폼 */}
+        <InputForm
+          onSubmit={handleAddToDo}
+          onChangeText={onChangeText}
+          text={text}
+          isWorking={isWorking}
+        />
       </View>
+      {/* 로딩 인디케이터 조건부 랜더링 */}
+      {isLoading && (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color={theme.white} />
+        </View>
+      )}
       <ScrollView>
+        {/* To Do List 출력 */}
         {Object.keys(toDos).map(key => (
           toDos[key].isWorking === isWorking && (
             <View style={styles.toDo} key={key} >
               <View style={styles.toDoFunctions}>
-                <TouchableOpacity onPress={() => { toggleComplete(key) }}>
-                  {toDos[key].isComplete
-                    ? <Fontisto name="checkbox-active" size={16} color={theme.white} />
-                    : <Fontisto name="checkbox-passive" size={16} color={theme.white} />}
-                </TouchableOpacity>
-                {toDos[key].isComplete
-                  ? <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={styles.completeText}
-                  >
-                    {toDos[key].text}
-                  </Text>
-                  : <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={styles.toDoText}
-                  >
-                    {toDos[key].text}
-                  </Text>
-                }
+                {/* 완료 토글 기능  */}
+                <CompleteToggler
+                  toggleComplete={() => toggleComplete(key)}
+                  toDo={toDos[key]}
+                />
+                {/* 완료 여부에 따른 조건부 랜더링*/}
+                <ToDoText toDo={toDos[key]} />
               </View>
-              <View style={styles.toDoFunctions}>
-                <TouchableOpacity>
-                  <Fontisto name="eraser" size={16} color={theme.ashGrey} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => { deleteToDo(key) }}>
-                  <Fontisto name='trash' size={16} color={theme.ashGrey} />
-                </TouchableOpacity>
-              </View>
+              {/* To Do 조작 버튼 */}
+              <TodoFunctions
+                toggleEdit={() => toggleEdit(key)}
+                deleteToDo={() => deleteToDo(key)}
+              />
             </View>
           )
         ))}

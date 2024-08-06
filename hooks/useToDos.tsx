@@ -1,14 +1,15 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert } from 'react-native';
+import useAsyncStorage from './useAsyncStorage';
 
-interface ToDo {
+export interface ToDo {
   text: string;
   isWorking: boolean;
   isComplete: boolean;
+  isEditing?: boolean;
 };
 
-interface ToDos {
+export interface ToDos {
   [key: string]: ToDo;
 };
 
@@ -16,29 +17,11 @@ const STORAGE_KEY = '@toDos'
 
 export default function useToDos() {
   const [toDos, setToDos] = useState<ToDos>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { saveItem: saveToDos, loadItem: loadToDos } = useAsyncStorage({ STORAGE_KEY, toSave: toDos, setState: setToDos, setIsLoading })
 
   useEffect(() => { loadToDos(); }, []);
-  useEffect(() => { saveToDos(toDos); }, [toDos]);
-
-  const saveToDos = useCallback(async (toSave: ToDos) => {
-    try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
-    } catch (error) {
-      // 저장공간 접근 불가 or 저장공간 용량 부족등 이슈 있을 때 에러 처리
-    }
-  }, []);
-
-  /**
-   * @Todo 데이터가 로드 되는 동안 로딩 인디케이터 표시할것
-   */
-  const loadToDos = async () => {
-    try {
-      const storageData = await AsyncStorage.getItem(STORAGE_KEY) as string;
-      storageData && setToDos(JSON.parse(storageData));
-    } catch (error) {
-      // 저장공간 접근 불가 등 에러 처리
-    }
-  };
+  useEffect(() => { saveToDos(); }, [toDos]);
 
   const addToDo = async (text: string, isWorking: boolean) => {
     if (text === '') return;
@@ -48,7 +31,6 @@ export default function useToDos() {
       [Date.now()]: { text, isWorking, isComplete: false }
     };
 
-    // save to do
     setToDos(newToDos);
   };
 
@@ -59,6 +41,7 @@ export default function useToDos() {
       setToDos(newToDos);
     } catch (error) {
       // 저장공간 접근 불가 등 에러 처리
+      console.error('toggleComplete function failed: ', error)
     }
   };
 
@@ -75,17 +58,34 @@ export default function useToDos() {
             setToDos(newToDos);
           } catch (error) {
             // 저장공간 접근 불가 등 에러 처리
+            console.error('deleteToDo function failed: ', error)
           }
         }
       }
     ])
-  }
+  };
+
+  const toggleEdit = async (key: string) => {
+    const newToDos = { ...toDos };
+    newToDos[key].isEditing = !newToDos[key].isEditing;
+    setToDos(newToDos);
+  };
+
+  const editToDo = async (key: string, newText: string) => {
+    const newToDos = { ...toDos };
+    newToDos[key].text = newText;
+    newToDos[key].isEditing = false;
+    setToDos(newToDos);
+  };
 
   return {
     toDos,
     addToDo,
     deleteToDo,
-    toggleComplete
+    toggleComplete,
+    toggleEdit,
+    editToDo,
+    isLoading
   };
 
 }

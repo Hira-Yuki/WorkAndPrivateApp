@@ -11,6 +11,7 @@ interface InputFormPropsType {
 export default function InputForm({ onSubmit, onChangeText, text, isWorking }: InputFormPropsType) {
   return (
     <TextInput
+      numberOfLines={1}
       returnKeyType='done'
       onSubmitEditing={onSubmit}
       onChangeText={onChangeText}
