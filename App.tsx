@@ -7,7 +7,7 @@ import { styles } from './styles/styleSheet';
 
 export default function App() {
   const { isWorking, travel, work } = useHeaderButton();
-  const { toDos, addToDo, deleteToDo, toggleComplete, isLoading, toggleEdit, editToDo } = useToDos();
+  const { toDos, addToDo, deleteToDo, toggleComplete, isLoading, toggleEdit } = useToDos();
   const { value: text, onChange: onChangeText, reset: resetText } = useInput('');
 
   const handleAddToDo = async () => {
