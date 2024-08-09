@@ -7,13 +7,29 @@ import { styles } from './styles/styleSheet';
 
 export default function App() {
   const { isWorking, travel, work } = useHeaderButton();
-  const { toDos, addToDo, deleteToDo, toggleComplete, isLoading, toggleEdit } = useToDos();
+  const { toDos, addToDo, deleteToDo, toggleComplete, isLoading, callEdit } = useToDos();
   const { value: text, onChange: onChangeText, reset: resetText } = useInput('');
+  const { value: target, onChange: onChangeTarget, reset: resetTarget } = useInput('')
 
   const handleAddToDo = async () => {
     await addToDo(text, isWorking);
     resetText();
   };
+
+  const toggleEdit = (key?: string) => {
+    if (key) {
+      const { toDoKey, newValue: targetText } = callEdit(key);
+      onChangeTarget(toDoKey);
+      onChangeText(targetText);
+    } else {
+      resetTarget();
+      resetText();
+    }
+  };
+
+  const submitEditedToDo = () => {
+
+  }
 
   return (
     <View style={styles.container}>
@@ -26,12 +42,24 @@ export default function App() {
       </View>
       <View>
         {/* 입력 폼 */}
-        <InputForm
-          onSubmit={handleAddToDo}
-          onChangeText={onChangeText}
-          text={text}
-          isWorking={isWorking}
-        />
+        {target === ''
+          ? (
+            <InputForm
+              onSubmit={handleAddToDo}
+              onChangeText={onChangeText}
+              text={text}
+              isWorking={isWorking}
+            />
+          )
+          : (
+            <InputForm
+              onSubmit={submitEditedToDo}
+              onChangeText={onChangeText}
+              text={text}
+              isWorking={isWorking}
+            />
+          )
+        }
       </View>
       {/* 로딩 인디케이터 조건부 랜더링 */}
       {isLoading && (

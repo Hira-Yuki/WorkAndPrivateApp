@@ -65,10 +65,14 @@ export default function useToDos() {
     ])
   };
 
-  const toggleEdit = async (key: string) => {
-    const newToDos = { ...toDos };
-    newToDos[key].isEditing = !newToDos[key].isEditing;
-    setToDos(newToDos);
+  const callEdit = (key: string) => {
+    const newValue = toDos[key].text;
+    const toDoKey = key;
+
+    return {
+      toDoKey,
+      newValue
+    }
   };
 
   const editToDo = async (key: string, newText: string) => {
@@ -83,7 +87,7 @@ export default function useToDos() {
     addToDo,
     deleteToDo,
     toggleComplete,
-    toggleEdit,
+    callEdit,
     editToDo,
     isLoading
   };
