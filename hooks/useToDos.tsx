@@ -66,12 +66,12 @@ export default function useToDos() {
   };
 
   const callEdit = (key: string) => {
-    const newValue = toDos[key].text;
+    const editValue = toDos[key].text;
     const toDoKey = key;
 
     return {
       toDoKey,
-      newValue
+      editValue
     }
   };
 

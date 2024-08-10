@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, Button, ScrollView, Text, View } from 'react-native';
 import { theme } from './color';
-import { CompleteToggler, HeaderSwitch, InputForm, TodoFunctions, ToDoText } from './components';
+import { CompleteToggler, GeneralModal, HeaderSwitch, InputForm, TodoFunctions, ToDoText } from './components';
 import { useHeaderButton, useInput, useToDos } from './hooks';
 import { styles } from './styles/styleSheet';
 
@@ -9,7 +10,9 @@ export default function App() {
   const { isWorking, travel, work } = useHeaderButton();
   const { toDos, addToDo, deleteToDo, toggleComplete, isLoading, callEdit } = useToDos();
   const { value: text, onChange: onChangeText, reset: resetText } = useInput('');
-  const { value: target, onChange: onChangeTarget, reset: resetTarget } = useInput('')
+
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   const handleAddToDo = async () => {
     await addToDo(text, isWorking);
@@ -18,11 +21,9 @@ export default function App() {
 
   const toggleEdit = (key?: string) => {
     if (key) {
-      const { toDoKey, newValue: targetText } = callEdit(key);
-      onChangeTarget(toDoKey);
-      onChangeText(targetText);
+      const { toDoKey, editValue: targetText } = callEdit(key);
+      setModalVisible(prev => !prev)
     } else {
-      resetTarget();
       resetText();
     }
   };
@@ -42,24 +43,12 @@ export default function App() {
       </View>
       <View>
         {/* 입력 폼 */}
-        {target === ''
-          ? (
-            <InputForm
-              onSubmit={handleAddToDo}
-              onChangeText={onChangeText}
-              text={text}
-              isWorking={isWorking}
-            />
-          )
-          : (
-            <InputForm
-              onSubmit={submitEditedToDo}
-              onChangeText={onChangeText}
-              text={text}
-              isWorking={isWorking}
-            />
-          )
-        }
+        <InputForm
+          onSubmit={handleAddToDo}
+          onChangeText={onChangeText}
+          text={text}
+          isWorking={isWorking}
+        />
       </View>
       {/* 로딩 인디케이터 조건부 랜더링 */}
       {isLoading && (
@@ -90,6 +79,21 @@ export default function App() {
           )
         ))}
       </ScrollView>
+      {/* 모달 테스트 */}
+      <GeneralModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello, I'm a Modal!</Text>
+            <Button
+              title="Hide Modal"
+              onPress={() => setModalVisible(!modalVisible)}
+            />
+          </View>
+        </View>
+      </GeneralModal>
       <StatusBar style='light' />
     </View>
   );
