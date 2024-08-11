@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { ActivityIndicator, Button, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { theme } from './color';
-import { CompleteToggler, GeneralModal, HeaderSwitch, InputForm, TodoFunctions, ToDoText } from './components';
+import { CompleteToggler, EditTask, GeneralModal, HeaderSwitch, InputForm, TodoFunctions, ToDoText } from './components';
 import { useHeaderButton, useInput, useToDos } from './hooks';
 import { styles } from './styles/styleSheet';
 
@@ -59,7 +59,10 @@ export default function App() {
       {/* 로딩 인디케이터 조건부 랜더링 */}
       {isLoading && (
         <View style={styles.loading}>
-          <ActivityIndicator size="large" color={theme.white} />
+          <ActivityIndicator
+            size="large"
+            color={theme.white}
+          />
         </View>
       )}
       <ScrollView>
@@ -85,26 +88,25 @@ export default function App() {
           )
         ))}
       </ScrollView>
-      {/* 모달 테스트 */}
+      {/* 모달 */}
       <GeneralModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>할일 수정하기</Text>
-            <InputForm
-              text={editValue}
-              isWorking={isWorking}
-              onChangeText={onChangeEditValue}
-              onSubmit={submitEditedToDo}
-            />
-            <Button
-              title="Cancel"
-              onPress={() => toggleEdit()}
-            />
-          </View>
-        </View>
+        {/* Task를 수정 중일때 조건부 랜더링 */}
+        {targetKey &&
+          <EditTask
+            toggleEdit={toggleEdit}
+            editValue={editValue}
+            isWorking={isWorking}
+            onChangeEditValue={onChangeEditValue}
+            submitEditedToDo={submitEditedToDo}
+          />
+        }
+        {/*
+          * 상세보기
+          * Do Something...
+        */}
       </GeneralModal>
       <StatusBar style='light' />
     </View>
