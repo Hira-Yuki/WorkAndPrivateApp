@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import useAsyncStorage from './useAsyncStorage';
 
 export interface ToDo {
@@ -45,24 +45,32 @@ export default function useToDos() {
     }
   };
 
-  const deleteToDo = async (key: string) => {
-    Alert.alert('Delete To Do?', 'Are you sure?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: "I'm Sure.",
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            const newToDos = { ...toDos };
-            delete newToDos[key];
-            setToDos(newToDos);
-          } catch (error) {
-            // 저장공간 접근 불가 등 에러 처리
-            console.error('deleteToDo function failed: ', error)
-          }
-        }
+  const runDeleteToDo = (key: string) => {
+    try {
+      const newToDos = { ...toDos };
+      delete newToDos[key];
+      setToDos(newToDos);
+    } catch (error) {
+      // 저장공간 접근 불가 등 에러 처리
+      console.error('deleteToDo function failed: ', error)
+    }
+  }
+
+  const deleteToDo = (key: string) => {
+    if (Platform.OS === 'web') {
+      if (confirm('Are you sure you want to delete to do?')) {
+        runDeleteToDo(key)
       }
-    ])
+    } else {
+      Alert.alert('Delete To Do?', 'Are you sure?', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: "I'm Sure.",
+          style: 'destructive',
+          onPress: () => runDeleteToDo(key)
+        }
+      ])
+    }
   };
 
   const callEdit = (key: string) => {
