@@ -16,7 +16,7 @@ export default function InputForm({ onSubmit, onChangeText, text, isWorking }: I
       onSubmitEditing={onSubmit}
       onChangeText={onChangeText}
       value={text}
-      placeholder={isWorking ? 'add a To Do' : 'Where do you want to go?'}
+      placeholder={isWorking ? 'What do you want to do?' : 'Where do you want to go?'}
       style={styles.input}
     />
   )

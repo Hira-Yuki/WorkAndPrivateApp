@@ -8,9 +8,10 @@ import { styles } from './styles/styleSheet';
 
 export default function App() {
   const { isWorking, travel, work } = useHeaderButton();
-  const { toDos, addToDo, deleteToDo, toggleComplete, isLoading, callEdit } = useToDos();
+  const { toDos, addToDo, deleteToDo, toggleComplete, isLoading, callEdit, editToDo } = useToDos();
   const { value: text, onChange: onChangeText, reset: resetText } = useInput('');
-
+  const { value: editValue, onChange: onChangeEditValue, reset: resetEditValue } = useInput('');
+  const [targetKey, setTargetKey] = useState('')
   const [modalVisible, setModalVisible] = useState(false);
 
 
@@ -22,14 +23,19 @@ export default function App() {
   const toggleEdit = (key?: string) => {
     if (key) {
       const { toDoKey, editValue: targetText } = callEdit(key);
+      onChangeEditValue(targetText)
       setModalVisible(prev => !prev)
+      setTargetKey(toDoKey)
     } else {
+      resetEditValue()
       resetText();
+      setModalVisible(prev => !prev)
     }
   };
 
   const submitEditedToDo = () => {
-
+    editToDo(targetKey, editValue)
+    toggleEdit()
   }
 
   return (
@@ -86,10 +92,16 @@ export default function App() {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello, I'm a Modal!</Text>
+            <Text style={styles.modalText}>할일 수정하기</Text>
+            <InputForm
+              text={editValue}
+              isWorking={isWorking}
+              onChangeText={onChangeEditValue}
+              onSubmit={submitEditedToDo}
+            />
             <Button
-              title="Hide Modal"
-              onPress={() => setModalVisible(!modalVisible)}
+              title="Cancel"
+              onPress={() => toggleEdit()}
             />
           </View>
         </View>

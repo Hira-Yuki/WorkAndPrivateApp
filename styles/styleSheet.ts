@@ -1,5 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { theme } from '../color';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window'); // 화면의 너비를 가져옵니다.
 
 export const styles = StyleSheet.create({
   container: {
@@ -64,8 +66,9 @@ export const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
+    width: SCREEN_WIDTH * 0.9,
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: theme.black,
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
@@ -79,6 +82,7 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   modalText: {
+    color: theme.white,
     marginBottom: 15,
     textAlign: 'center',
   },
